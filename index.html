@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BelovedScent | Luxury Perfume Discovery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gold: #D4AF37;
+            --secondary-gold: #F4E4A6;
+            --dark-bg: #0A0A0A;
+            --light-bg: #151515;
+            --card-bg: #1E1E1E;
+            --text-light: #F5F5F5;
+            --text-gray: #AAAAAA;
+            --accent-burgundy: #7A1C3F;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Notifications */
+        #notification-host {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: rgba(20, 20, 20, 0.95);
+            border-left: 4px solid var(--primary-gold);
+            padding: 15px 25px;
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease forwards;
+            min-width: 250px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Header Styles */
+        header {
+            background-color: transparent;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid transparent;
+        }
+
+        header.scrolled {
+            background-color: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            color: var(--primary-gold);
+            border: 2px solid var(--primary-gold);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            background: linear-gradient(to right, var(--primary-gold), var(--secondary-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2px;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            color: var(--text-gray);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--primary-gold);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .user-actions i {
+            font-size: 18px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-actions i:hover {
+            color: var(--primary-gold);
+            transform: scale(1.1);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            color: var(--primary-gold);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h2 {
+            font-size: 64px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .hero h2 span {
+            color: var(--primary-gold);
+            display: block;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary-gold), var(--secondary-gold));
+            color: var(--dark-bg);
+            padding: 18px 45px;
+            border-radius: 2px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Showcase Section */
+        .showcase-section {
+            padding: 120px 0;
+            background-color: var(--dark-bg);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background-color: var(--primary-gold);
+        }
+
+        .perfume-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .perfume-card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.05);
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .perfume-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+        }
+
+        .perfume-img {
+            height: 380px;
+            width: 100%;
+            overflow: hidden;
+            background-color: #111;
+        }
+
+        .perfume-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .perfume-card:hover .perfume-img img {
+            transform: scale(1.1);
+            filter: brightness(0.7);
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .perfume-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .perfume-tag {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+            padding: 4px 12px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .perfume-info {
+            padding: 25px;
+        }
+
+        .perfume-brand {
+            color: var(--primary-gold);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .perfume-name {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .price-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .price {
+            font-size: 22px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .add-btn {
+            background: transparent;
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .add-btn:hover {
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+        }
+
+        /* About & Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 40px 20px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: var(--transition);
+        }
+
+        .feature-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+            border-color: var(--primary-gold);
+        }
+
+        .feature-item i {
+            font-size: 40px;
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 120px 0;
+            background-color: var(--light-bg);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+        }
+
+        .contact-form {
+            background: var(--dark-bg);
+            padding: 50px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .form-control {
+            margin-bottom: 25px;
+        }
+
+        .form-control label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-gold);
+        }
+
+        .form-control input, .form-control textarea {
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            padding: 15px;
+            color: white;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-control input:focus, .form-control textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 0 40px;
+            background: #050505;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            color: var(--primary-gold);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-gold);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            border-color: var(--primary-gold);
+            color: var(--primary-gold);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 0.8s all ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 992px) {
+            .contact-grid, .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h2 { font-size: 48px; }
+            nav { display: none; }
+            .menu-toggle { display: block; }
+        }
+
+        @media (max-width: 600px) {
+            .hero h2 { font-size: 36px; }
+            .section-header h2 { font-size: 32px; }
+            .contact-form { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="notification-host"></div>
+
+    <!-- Header -->
+    <header id="main-header">
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <div class="logo-text">
+                    <h1>BelovedScent</h1>
+                    <p>Elegance in Every Drop</p>
+                </div>
+            </a>
+            
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#discover">Collections</a></li>
+                    <li><a href="#about">Philosophy</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <div class="user-actions">
+                    <i class="fas fa-search" id="search-trigger"></i>
+                    <i class="fas fa-shopping-bag" id="cart-trigger"></i>
+                    <i class="fas fa-bars menu-toggle" id="mobile-toggle"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content reveal">
+            <h2>Experience Luxury <span>Through Scent</span></h2>
+            <p>Curated exclusive fragrances that define your identity. Experience niche perfumes with global character and local speed.</p>
+            <a href="#discover" class="cta-button">Browse Collection</a>
+        </div>
+    </section>
+
+    <!-- Discovery Section -->
+    <section class="showcase-section" id="discover">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>The Signature Edit</h2>
+                <p>Meticulously selected scents for those who demand excellence.</p>
+            </div>
+
+            <div class="perfume-grid">
+                <!-- Card 1 -->
+                <div class="perfume-card reveal">
+                    <div class="perfume-tag">Best Seller</div>
+                    <div class="perfume-img">
+                        <img src="https://images.unsplash.com/photo-1557170334-a9632e77c6e4?auto=format&fit=crop&q=80&w=600" alt="Icon EDP">
+                    </div>
+                    <div class="perfume-info">
+                        <p class="perfume-brand">GK Men</p>
+                        <h3 class="perfume-name">ICON Eau de Parfum</h3>
+                        <div class="price-container">
+                            <span class="price">₦13,000</span>
+                            <button class="add-btn" onclick="addToCart('ICON EDP')">Add to Bag</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="perfume-card reveal">
+                    <div class="perfume-tag">New Season</div>
+                    <div class="perfume-img">
+                        <img src="https://images.unsplash.com/photo-1588405863914-2c1303e46749?auto=format&fit=crop&q=80&w=600" alt="Riggs Blend">
+                    </div>
+                    <div class="perfume-info">
+                        <p class="perfume-brand">Riggs London</p>
+                        <h3 class="perfume-name">Signature Noir</h3>
+                        <div class="price-container">
+                            <span class="price">₦5,000</span>
+                            <button class="add-btn" onclick="addToCart('Signature Noir')">Add to Bag</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="perfume-card reveal">
+                    <div class="perfume-tag">Niche</div>
+                    <div class="perfume-img">
+                        <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" alt="Sauvage">
+                    </div>
+                    <div class="perfume-info">
+                        <p class="perfume-brand">Elite Series</p>
+                        <h3 class="perfume-name">Wild Essence</h3>
+                        <div class="price-container">
+                            <span class="price">₦50,000</span>
+                            <button class="add-btn" onclick="addToCart('Wild Essence')">Add to Bag</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="perfume-card reveal">
+                    <div class="perfume-tag">Rare</div>
+                    <div class="perfume-img">
+                        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=600" alt="Chanel">
+                    </div>
+                    <div class="perfume-info">
+                        <p class="perfume-brand">Chanel</p>
+                        <h3 class="perfume-name">L'Elegance</h3>
+                        <div class="price-container">
+                            <span class="price">₦65,000</span>
+                            <button class="add-btn" onclick="addToCart('L\'Elegance')">Add to Bag</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy/Features -->
+    <section class="showcase-section" id="about" style="background: var(--light-bg);">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Our Philosophy</h2>
+                <p>Bridging the gap between high-end perfumery and everyday accessibility.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-item reveal">
+                    <i class="fas fa-award"></i>
+                    <h4>Authentic Niche</h4>
+                    <p>We source only 100% authentic designer and niche fragrances.</p>
+                </div>
+                <div class="feature-item reveal">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h4>Next-Day Reach</h4>
+                    <p>Express delivery across Lagos and nationwide shipping networks.</p>
+                </div>
+                <div class="feature-item reveal">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h4>Personal Styling</h4>
+                    <p>Consult with our scent experts to find your perfect signature notes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="reveal">
+                    <h2 style="font-size: 42px; margin-bottom: 20px;">Get In Touch</h2>
+                    <p style="color: var(--text-gray); margin-bottom: 40px;">Whether you're looking for a gift or your next signature scent, we're here to help.</p>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h5 style="color: var(--primary-gold); margin-bottom: 5px;">Direct Line</h5>
+                        <p>+234 916 792 3161</p>
+                    </div>
+                    <div style="margin-bottom: 30px;">
+                        <h5 style="color: var(--primary-gold); margin-bottom: 5px;">Headquarters</h5>
+                        <p>Lagos, Nigeria</p>
+                    </div>
+                </div>
+
+                <div class="contact-form reveal">
+                    <form id="contactForm">
+                        <div class="form-control">
+                            <label>Full Name</label>
+                            <input type="text" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-control">
+                            <label>Email</label>
+                            <input type="email" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-control">
+                            <label>Inquiry</label>
+                            <textarea rows="4" placeholder="How can we assist your discovery?"></textarea>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%; border: none; cursor: pointer;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4 style="font-family: 'Cinzel'; color: white;">BelovedScent</h4>
+                    <p style="color: var(--text-gray); font-size: 14px; margin-top: 15px;">Setting the standard for luxury fragrance distribution in Nigeria. Style is what you wear, scent is who you are.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Men's Edit</a></li>
+                        <li><a href="#">Women's Edit</a></li>
+                        <li><a href="#">Niche Collection</a></li>
+                        <li><a href="#">Gift Sets</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Newsletter</h4>
+                    <p style="color: var(--text-gray); font-size: 13px; margin-bottom: 15px;">Join the inner circle for exclusive drops and private sales.</p>
+                    <div style="display: flex;">
+                        <input type="email" placeholder="Email" style="background: #111; border: 1px solid #333; padding: 10px; color: white; flex: 1;">
+                        <button style="background: var(--primary-gold); border: none; padding: 0 15px; cursor: pointer;"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; color: #444; font-size: 12px; padding-top: 40px; border-top: 1px solid #111;">
+                &copy; 2025 BelovedScent Luxury. Crafted for the Distinguished.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll Reveal
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', reveal);
+        window.addEventListener('load', reveal);
+
+        // Custom Toast Notifications
+        function showNotification(message) {
+            const host = document.getElementById('notification-host');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-check-circle" style="color: var(--primary-gold)"></i> <span>${message}</span>`;
+            host.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Cart Action
+        function addToCart(name) {
+            showNotification(`${name} added to your luxury edit.`);
+        }
+
+        // Form Submit
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showNotification('Your message has been dispatched to our concierge.');
+            e.target.reset();
+        });
+
+        // Mobile Menu Toggle (Mockup)
+        document.getElementById('mobile-toggle').addEventListener('click', () => {
+            showNotification('Navigation menu expanded.');
+        });
+
+        // Search Trigger
+        document.getElementById('search-trigger').addEventListener('click', () => {
+            showNotification('Scent search activated.');
+        });
+    </script>
+</body>
+</html>
+
